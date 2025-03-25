@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>☢️ COMBO ARSENAL 💥</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+    <style>
+        body {
+            background-color: #0a0a1a;
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .neon-title {
+            text-shadow: 
+                0 0 5px #00ffff,
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 80px #00ffff;
+            animation: neon-flicker 1.5s infinite alternate;
+        }
+        @keyframes neon-flicker {
+            0% { text-shadow: 
+                0 0 5px #00ffff,
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 80px #00ffff; }
+            100% { text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 80px #00ffff,
+                0 0 160px #00ffff; }
+        }
+        .bg-dark-neon {
+            background-color: #1a1a2e;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        .neon-input {
+            background-color: #16213e;
+            border-color: #0f3460;
+            color: #00ffff;
+        }
+        .neon-input:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        .neon-btn {
+            background-color: #0f3460;
+            border-color: #00ffff;
+            color: #00ffff;
+            transition: all 0.3s ease;
+        }
+        .neon-btn:hover {
+            background-color: #00ffff;
+            color: #1a1a2e;
+            box-shadow: 0 0 20px #00ffff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        <div class="bg-dark-neon rounded-lg p-6">
+            <h1 class="text-4xl font-bold mb-6 text-center neon-title">☢️ COMBO ARSENAL 💥</h1>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-gray-300 font-bold mb-2" for="input">
+                        Input Combolist
+                    </label>
+                    <textarea 
+                        id="input" 
+                        class="w-full h-64 p-3 border rounded-lg neon-input focus:outline-none"
+                        placeholder="Paste your combolist. Advanced parsing:
+- Multiple delimiter support
+- Complex format extraction
+- Regex filtering"
+                    ></textarea>
+                </div>
+                
+                <div>
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold mb-3 text-gray-200">Advanced Cleaning Options</h2>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="removeDuplicates" 
+                                    checked 
+                                    class="mr-2 text-blue-600 focus:ring-blue-500"
+                                >
+                                <label for="removeDuplicates" class="text-gray-300">Remove Duplicates</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="validateEmails" 
+                                    class="mr-2 text-blue-600 focus:ring-blue-500"
+                                >
+                                <label for="validateEmails" class="text-gray-300">Validate Emails</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="removeInvalidFormats" 
+                                    checked 
+                                    class="mr-2 text-blue-600 focus:ring-blue-500"
+                                >
+                                <label for="removeInvalidFormats" class="text-gray-300">Remove Invalid Formats</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="filterLengths" 
+                                    class="mr-2 text-blue-600 focus:ring-blue-500"
+                                >
+                                <label for="filterLengths" class="text-gray-300">Filter by Password Length</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold mb-3 text-gray-200">Output Customization</h2>
+                        <select 
+                            id="outputFormat" 
+                            class="w-full p-2 border rounded-lg neon-input focus:outline-none"
+                        >
+                            <option value="username:password">username:password</option>
+                            <option value="email:password">email:password</option>
+                            <option value="email|username:password">email|username:password</option>
+                            <option value="custom">Custom Regex</option>
+                        </select>
+                        
+                        <div id="customRegexContainer" class="mt-2 hidden">
+                            <input 
+                                type="text" 
+                                id="customRegex" 
+                                placeholder="Enter custom regex pattern" 
+                                class="w-full p-2 border rounded-lg neon-input focus:outline-none"
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h2 class="text-xl font-semibold mb-3 text-gray-200">Password Filters</h2>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input 
+                                type="number" 
+                                id="minPasswordLength" 
+                                placeholder="Min Length" 
+                                class="p-2 border rounded-lg neon-input focus:outline-none"
+                            >
+                            <input 
+                                type="number" 
+                                id="maxPasswordLength" 
+                                placeholder="Max Length" 
+                                class="p-2 border rounded-lg neon-input focus:outline-none"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button 
+                    id="cleanButton"
+                    class="neon-btn px-6 py-2 rounded-lg transition duration-300"
+                >
+                    Purge Combolist
+                </button>
+            </div>
+            
+            <div class="mt-6">
+                <label class="block text-gray-300 font-bold mb-2" for="output">
+                    Processed Combolist
+                </label>
+                <div class="relative">
+                    <textarea 
+                        id="output" 
+                        readonly
+                        class="w-full h-64 p-3 border rounded-lg neon-input focus:outline-none"
+                        placeholder="Processed results will materialize here"
+                    ></textarea>
+                    <button 
+                        id="copyButton"
+                        class="absolute top-2 right-2 bg-green-800 text-green-300 px-3 py-1 rounded-lg hover:bg-green-700 transition duration-300"
+                    >
+                        Copy
+                    </button>
+                </div>
+                <div id="stats" class="mt-2 text-gray-400 text-center"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputTextarea = document.getElementById('input');
+            const outputTextarea = document.getElementById('output');
+            const cleanButton = document.getElementById('cleanButton');
+            const copyButton = document.getElementById('copyButton');
+            const statsDiv = document.getElementById('stats');
+            const outputFormatSelect = document.getElementById('outputFormat');
+            const customRegexContainer = document.getElementById('customRegexContainer');
+            const customRegexInput = document.getElementById('customRegex');
+
+            // Output format selection
+            outputFormatSelect.addEventListener('change', () => {
+                customRegexContainer.classList.toggle('hidden', outputFormatSelect.value !== 'custom');
+            });
+
+            // Email validation regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Copy to clipboard
+            new ClipboardJS(copyButton, {
+                text: function() {
+                    return outputTextarea.value;
+                }
+            });
+
+            cleanButton.addEventListener('click', () => {
+                // Get input and options
+                const input = inputTextarea.value;
+                const removeDuplicates = document.getElementById('removeDuplicates').checked;
+                const validateEmails = document.getElementById('validateEmails').checked;
+                const removeInvalidFormats = document.getElementById('removeInvalidFormats').checked;
+                const filterLengths = document.getElementById('filterLengths').checked;
+                const outputFormat = document.getElementById('outputFormat').value;
+                const minPasswordLength = document.getElementById('minPasswordLength').value;
+                const maxPasswordLength = document.getElementById('maxPasswordLength').value;
+                const customRegex = customRegexInput.value;
+
+                // Split input into lines
+                const lines = input.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line !== '');
+
+                // Process lines
+                let cleanedLines = lines.map(line => {
+                    // Try to extract username/email and password
+                    let username = '', email = '', password = '';
+
+                    // Split by various delimiters
+                    const delimiters = [':', '|', ' '];
+                    for (let delimiter of delimiters) {
+                        const parts = line.split(delimiter);
+                        if (parts.length >= 2) {
+                            // First part could be email or username
+                            const firstPart = parts[0].trim();
+                            const secondPart = parts[1].trim();
+
+                            // Check if first part is an email
+                            if (emailRegex.test(firstPart)) {
+                                email = firstPart;
+                                username = email.split('@')[0];
+                                password = secondPart;
+                                break;
+                            }
+                            // Check if it's a username/password
+                            else {
+                                username = firstPart;
+                                password = secondPart;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Validate
+                    if (removeInvalidFormats) {
+                        if (!username || !password) return null;
+                        if (validateEmails && email && !emailRegex.test(email)) return null;
+                    }
+
+                    // Password length filtering
+                    if (filterLengths) {
+                        const minLen = minPasswordLength ? parseInt(minPasswordLength) : 0;
+                        const maxLen = maxPasswordLength ? parseInt(maxPasswordLength) : Infinity;
+                        if (password.length < minLen || password.length > maxLen) return null;
+                    }
+
+                    // Custom regex filtering
+                    if (outputFormat === 'custom' && customRegex) {
+                        try {
+                            const regex = new RegExp(customRegex);
+                            if (!regex.test(line)) return null;
+                        } catch (e) {
+                            console.error('Invalid regex', e);
+                        }
+                    }
+
+                    // Format output based on selected option
+                    switch (outputFormat) {
+                        case 'username:password':
+                            return `${username}:${password}`;
+                        case 'email:password':
+                            return email ? `${email}:${password}` : `${username}:${password}`;
+                        case 'email|username:password':
+                            return email ? `${email}|${username}:${password}` : `${username}:${password}`;
+                        case 'custom':
+                            return line; // Keep original line if custom format
+                        default:
+                            return `${username}:${password}`;
+                    }
+                }).filter(line => line !== null);
+
+                // Remove duplicates if option is checked
+                if (removeDuplicates) {
+                    cleanedLines = [...new Set(cleanedLines)];
+                }
+
+                // Update output and stats
+                outputTextarea.value = cleanedLines.join('\n');
+                statsDiv.innerHTML = `
+                    <span class="text-green-400">✓ Total Entries: ${cleanedLines.length}</span> | 
+                    <span class="text-red-400">✗ Filtered Out: ${lines.length - cleanedLines.length}</span>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
